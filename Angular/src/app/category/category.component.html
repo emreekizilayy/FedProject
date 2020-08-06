@@ -1,0 +1,91 @@
+<form [formGroup]="categoryForm" (ngSubmit)="OnSubmit()">
+    <div class="position-relative form-group">
+        <input type="hidden" formControlName="_id">
+        <label for="exampleAddress">Name</label>
+        <input class="form-control" id="exampleAddress" formControlName="name" placeholder="Category Name" type="text">
+    </div>
+    <div class="position-relative form-group">
+        <label for="exampleAddress2">Description</label>
+        <input class="form-control" id="exampleAddress2" formControlName="description" placeholder="Category Description" type="text">
+    </div>
+    <!-- <div class="form-row">
+        <div class="col-md-6">
+            <div class="position-relative form-group"><label for="exampleCity">Price</label><input class="form-control" id="exampleCity" formControlName="price" type="number" ng-model="pricevalue"></div>
+        </div>
+    </div> -->
+    
+    <!-- <div class="position-relative form-check"><input class="form-check-input" id="exampleCheck" name="check" type="checkbox"><label class="form-check-label" for="exampleCheck">Check me out</label></div> -->
+    <button class="mt-2 btn btn-primary" type="submit" *ngIf="isAdd">Add</button>
+    <button class="mt-2 btn btn-primary" type="submit" *ngIf="!isAdd">Update</button>
+</form>
+
+<div class="card card-box mb-5 categorylist">
+    <div class="card-header pr-2">
+        <div class="card-header--title">
+            <small>Categories</small>
+            <!-- <b>This table card has custom content</b> -->
+        </div>
+        <div class="card-header--actions">
+            <a [routerLink]="" class="btn btn-sm text-primary btn-link" tooltip="View details">
+                <fa-icon [icon]="['far', 'keyboard']" class="font-size-lg"></fa-icon>
+            </a>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover text-nowrap table-striped mb-0">
+                <thead class="thead-light">
+                <tr>
+                    <th style="width: 40%;">Name</th>
+                    <th class="text-center">Description</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let category of categories">
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <a class="font-weight-bold text-black" title="...">{{category.name}}</a>
+                                <span class="text-black-50 d-block">{{category.description}}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <span class="font-weight-bold text-black">{{category.description}}</span>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group btn-group-sm" dropdown placement="bottom right" container="body">
+                            <button class="btn btn-sm px-2 py-0 dropdown-toggle no-caret btn-primary"
+                                    dropdownToggle type="button">
+                                <fa-icon [icon]="['fas', 'ellipsis-h']" class="font-size-lg"></fa-icon>
+                            </button>
+                            <div *dropdownMenu class="dropdown-menu dropdown-menu-xl p-0 dropdown-menu-right">
+                                <ul class="nav nav-primary nav-pills flex-column pt-2 pb-3">
+                                    <li class="nav-item">
+                                        <a [routerLink]="" class="nav-link text-warning mx-3">
+                                            <div class="nav-link-icon">
+                                                <fa-icon [icon]="['far', 'keyboard']"></fa-icon>
+                                            </div>
+                                            <span (click)="GetData(category._id)">Update</span>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-divider"></li>
+                                    <li class="nav-item">
+                                        <a [routerLink]="" class="nav-link text-danger mx-3">
+                                            <div class="nav-link-icon">
+                                                <fa-icon [icon]="['fas', 'times']"></fa-icon>
+                                            </div>
+                                            <span (click)="Delete(category._id)">Delete</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
