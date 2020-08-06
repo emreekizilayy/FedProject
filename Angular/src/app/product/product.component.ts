@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { product } from 'src/app/models/product';
 import { CategoryService } from '../service/category.service';
 import { BrandService } from '../service/brand.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product',
@@ -22,7 +23,7 @@ export class ProductComponent implements OnInit {
   })
   submitted = false;
   isAdd = true;
-  constructor(private _productService:ProductService,private _categoryService:CategoryService,private _brandService:BrandService) { }
+  constructor(private _productService:ProductService,private _categoryService:CategoryService,private _brandService:BrandService,private toastr:ToastrService) { }
 
   products:[];
   categories:[];
@@ -37,18 +38,33 @@ export class ProductComponent implements OnInit {
     if(this.productForm.valid && this.isAdd){
       this._productService.AddProduct(this.productForm.value).subscribe(
         (q) => {
+        this.toastr.success("Successfully Added");
         this.Load();
         this.productForm.reset();
       },
       (error) => {
-        console.log(error);
+        var errors = JSON.stringify(error.error.errors);
+        var errorList = JSON.parse(errors);
+        
+        errorList.map(element => {
+          this.toastr.error(element.msg, 'Error!');
+        });
       } );
     }
     else if(this.productForm.valid && !this.isAdd){
       console.log(this.productForm.value);
       this._productService.UpdateProduct(this.productForm.value).subscribe((q) => {
+        this.toastr.success('Successfully Updated');
         this.Load();
         this.productForm.reset();
+      },
+      (error) => {
+        error.map(element => {
+          this.toastr.error(element.msg, 'Error!');
+        });
+      },
+      () => {
+        this.Load();
       });
     }
   }
